@@ -1,9 +1,9 @@
 package com.test.simpleapp.feature.shortener
 
-import android.webkit.URLUtil
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.test.simpleapp.common.ValidationUtils
 import com.test.simpleapp.domain.exception.SimpleException
 import com.test.simpleapp.domain.model.OriginalUrl
 import com.test.simpleapp.domain.model.ShortLink
@@ -11,13 +11,14 @@ import com.test.simpleapp.domain.repository.ShortenerRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ShortenerViewModel @Inject constructor(private val repository: ShortenerRepository) : ViewModel() {
+class ShortenerViewModel @Inject constructor(
+    private val repository: ShortenerRepository,
+    private val validationUtils: ValidationUtils
+) : ViewModel() {
 
     val urlInput = ObservableField<String>()
     val resultUrl = ObservableField<String>()
     val errorMessage = ObservableField<String>()
-
-    val decodeErrorMessage = ObservableField<String>()
 
     fun shortenUrl() {
         urlInput.get()?.let { url ->
@@ -67,7 +68,5 @@ class ShortenerViewModel @Inject constructor(private val repository: ShortenerRe
         errorMessage.set(null)
     }
 
-    private fun validate(url: String): Boolean {
-        return URLUtil.isValidUrl(url)
-    }
+    private fun validate(url: String): Boolean = validationUtils.isValidUrl(url)
 }
