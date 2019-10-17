@@ -5,16 +5,19 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 
+def RES_TYPE_STRING = "string"
+def BASE_URL = "base_url"
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.test.simpleapp"
-        minSdkVersion 15
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resValue(RES_TYPE_STRING, BASE_URL, "http://demo9111517.mockable.io/")
     }
     buildTypes {
         release {
@@ -22,16 +25,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    def androidTestCore = '1.1.0'
-
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.core:core-ktx:1.1.0"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation "androidx.test:core:1.2.0"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
@@ -64,4 +76,8 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     compileOnly 'javax.annotation:jsr250-api:1.0'
+
+    implementation "com.google.android.material:material:1.0.0"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-beta01'
 }
